@@ -56,7 +56,7 @@ pub struct ProductRegisterForm {
     pub name:           Option<String> ,
    // #[serde(deserialize_with = "empty_string_as_none")]
     pub price:          Option<i32> ,
-    #[serde(deserialize_with = "empty_string_as_none")]
+   // #[serde(deserialize_with = "empty_string_as_none")]
     pub category_id:    Option<i32>
 }
 /// FormをProductに変換する
