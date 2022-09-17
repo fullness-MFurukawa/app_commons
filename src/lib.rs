@@ -1,4 +1,5 @@
 pub mod domain;
+pub mod service;
 pub mod infrastructure;
 pub mod app_commons;
 pub mod view_commons;
