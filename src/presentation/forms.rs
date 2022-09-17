@@ -123,26 +123,30 @@ impl FormToDomain<User> for LoginForm{
 /// 入力値検証
 impl AppValidator for LoginForm {
     fn validate_value(&self) -> anyhow::Result<(), ValidationError> {
+        // エラーメッセージを格納するHashMap
         let mut errors:HashMap<String,String> = HashMap::new();
-        match self.validate() {
+        match self.validate() { // 検証メソッドの実行
             Ok(_) => Ok(()) ,
             Err(validate_errors) => {
+                // フィールド毎のエラーを取得する
                 let field_errors = validate_errors.field_errors();
-                let error =  field_errors.get("name");
-                if error.is_some(){
-                    let name_errors = error.unwrap();
-                    for name_error in *name_errors {
-                        errors.insert("name".to_string(), name_error.message.as_ref().unwrap().to_string());
-                    }
-                }
-                let error =  field_errors.get("password");
-                if error.is_some() {
-                    let password_errors = error.unwrap();
-                    for password_error in *password_errors {
-                        errors.insert("password".to_string(), password_error.message.as_ref().unwrap().to_string());
-                    }
-                }
-                Err(ValidationError::from(errors))
+                // nameフィールドのエラーを取得してHashMapに格納する
+                match field_errors.get("name"){
+                    Some(name_errors) =>{
+                        for name_error in *name_errors {
+                            errors.insert(String::from("name"), name_error.message.as_ref().unwrap().to_string());
+                        }
+                    }, None => ()
+                };
+                // passwordフィールドのエラーを取得してHashMapに格納する
+                match field_errors.get("password"){
+                    Some(password_errors)=>{
+                        for password_error in *password_errors {
+                            errors.insert("password".to_string(), password_error.message.as_ref().unwrap().to_string());
+                        }
+                    },None => ()
+                };
+                Err(ValidationError::from(errors)) // 検証エラーを返す
             }
         }
     }

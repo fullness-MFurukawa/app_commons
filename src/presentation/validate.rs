@@ -20,7 +20,6 @@ impl From<HashMap<String , String>> for ValidationError {
         Self{errors:_errors}
     }
 }
-
 ///
 /// 入力値検証
 ///
