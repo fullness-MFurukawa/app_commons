@@ -1,6 +1,7 @@
 pub mod domain;
 pub mod service;
 pub mod infrastructure;
+pub mod application;
 pub mod app_commons;
 pub mod view_commons;
 pub mod error;
