@@ -1,6 +1,6 @@
 use std::sync::Arc;
 use sea_orm::DatabaseConnection;
-use crate::app_commons::app_service::{AuthenticateAppService, ProductRegisterAppService, ProductSearchAppService};
+use crate::application::app_service::{AuthenticateAppService, ProductRegisterAppService, ProductSearchAppService};
 use crate::application::sea_orm::authenticate::AuthenticateAppServiceImpl;
 use crate::application::sea_orm::product_register::ProductRegisterAppServiceImpl;
 use crate::application::sea_orm::product_search::ProductSearchAppServiceImpl;

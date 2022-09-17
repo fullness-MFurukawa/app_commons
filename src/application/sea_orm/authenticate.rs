@@ -1,8 +1,8 @@
 use std::sync::Arc;
 use async_trait::async_trait;
 use sea_orm::DatabaseConnection;
-use crate::app_commons::app_service::AuthenticateAppService;
-use crate::app_commons::transfers::{EntityToDto, UserDto};
+use crate::application::app_service::AuthenticateAppService;
+use crate::application::transfers::{EntityToDto, UserDto};
 use crate::Result;
 use crate::domain::services::UserService;
 use crate::service::sea_orm::user::UserServiceImpl;

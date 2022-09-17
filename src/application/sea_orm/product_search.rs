@@ -1,8 +1,8 @@
 use std::sync::Arc;
 use async_trait::async_trait;
 use sea_orm::DatabaseConnection;
-use crate::app_commons::app_service::ProductSearchAppService;
-use crate::app_commons::transfers::{EntityToDto, ProductDto};
+use crate::application::app_service::ProductSearchAppService;
+use crate::application::transfers::{EntityToDto, ProductDto};
 use crate::Result;
 use crate::domain::services::ProductService;
 use crate::domain::values::products::ProductName;

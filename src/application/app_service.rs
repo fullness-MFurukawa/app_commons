@@ -1,6 +1,6 @@
 use async_trait::async_trait;
 use crate::Result;
-use crate::app_commons::transfers::{CategoryDto, ProductDto, UserDto};
+use crate::application::transfers::{CategoryDto, ProductDto, UserDto};
 
 ///
 /// 商品検索アプリケーションサービス
