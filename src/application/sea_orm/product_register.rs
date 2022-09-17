@@ -10,7 +10,7 @@ use crate::domain::services::{CategoryService, ProductService};
 use crate::domain::values::products::ProductName;
 use crate::service::sea_orm::category::CategoryServiceImpl;
 use crate::service::sea_orm::product::ProductServiceImpl;
-use crate::view_commons::forms::{FormToDomain, ProductRegisterForm};
+use crate::presentation::forms::{FormToDomain, ProductRegisterForm};
 
 
 ///

@@ -4,7 +4,7 @@ use crate::application::app_service::{AuthenticateAppService, ProductRegisterApp
 use crate::application::sea_orm::authenticate::AuthenticateAppServiceImpl;
 use crate::application::sea_orm::product_register::ProductRegisterAppServiceImpl;
 use crate::application::sea_orm::product_search::ProductSearchAppServiceImpl;
-use crate::view_commons::forms::{LoginForm, ProductRegisterForm, ProductSearchForm};
+use crate::presentation::forms::{LoginForm, ProductRegisterForm, ProductSearchForm};
 
 ///
 /// アプリケーションサービスプロバイダ

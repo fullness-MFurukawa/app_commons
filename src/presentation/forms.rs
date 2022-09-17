@@ -6,7 +6,7 @@ use crate::domain::values::categories::{CategoryId, CategoryName};
 use crate::domain::values::products::{ProductId, ProductName, ProductPrice};
 use crate::domain::values::users::{Mail, Password, UserName};
 use crate::error::AppError;
-use crate::view_commons::validate::{AppValidator, ValidationError};
+use crate::presentation::validate::{AppValidator, ValidationError};
 
 
 ///

@@ -7,7 +7,7 @@ use crate::Result;
 use crate::domain::services::ProductService;
 use crate::domain::values::products::ProductName;
 use crate::service::sea_orm::product::ProductServiceImpl;
-use crate::view_commons::forms::{FormToDomain, ProductSearchForm};
+use crate::presentation::forms::{FormToDomain, ProductSearchForm};
 
 
 ///

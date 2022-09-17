@@ -2,7 +2,7 @@ pub mod domain;
 pub mod service;
 pub mod infrastructure;
 pub mod application;
-pub mod view_commons;
+pub mod presentation;
 pub mod error;
 
 ///

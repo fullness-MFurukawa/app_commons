@@ -6,7 +6,7 @@ use crate::application::transfers::{EntityToDto, UserDto};
 use crate::Result;
 use crate::domain::services::UserService;
 use crate::service::sea_orm::user::UserServiceImpl;
-use crate::view_commons::forms::{FormToDomain, LoginForm};
+use crate::presentation::forms::{FormToDomain, LoginForm};
 
 
 ///
