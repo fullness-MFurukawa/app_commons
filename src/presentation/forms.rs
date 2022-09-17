@@ -24,6 +24,7 @@ pub fn empty_string_as_none<'de, T, D>(deserializer: D) -> Result<Option<T>, D::
     Ok(T::deserialize(deserializer).ok())
 }
 
+// 商品検索
 #[derive(Deserialize , Debug)]
 pub struct ProductSearchForm {
     pub keyword: Option<String>
@@ -49,13 +50,11 @@ impl FormToDomain<ProductName> for ProductSearchForm{
         Ok(ProductName::try_from(self.keyword.as_ref().unwrap().clone())?)
     }
 }
+// 商品登録
 #[derive(Deserialize , Serialize , Debug , Clone)]
 pub struct ProductRegisterForm {
-    // #[validate(length(min = 4 , max = 20, message="商品名は４文字以上20文字以内で入力してください。"))]
     pub name:           Option<String> ,
-    #[serde(deserialize_with = "empty_string_as_none")]
-    // #[validate(required)]
-    // #[validate(range(min = 50, max = 100000 ,message="単価は50～100000までで入力してください。"))]
+   // #[serde(deserialize_with = "empty_string_as_none")]
     pub price:          Option<i32> ,
     #[serde(deserialize_with = "empty_string_as_none")]
     pub category_id:    Option<i32>
@@ -105,7 +104,7 @@ impl AppValidator for ProductRegisterForm{
     }
 }
 
-// 認証情報
+// 認証
 #[derive(Debug , Clone , Deserialize , Serialize , Validate)]
 pub struct LoginForm {
     #[validate(length(min = 6 , max = 20, message="ユーザー名は6文字以上20文字以内で入力して下さい。"))]
