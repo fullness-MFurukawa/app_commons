@@ -1,4 +1,6 @@
 pub mod domain;
+pub mod app_commons;
+pub mod view_commons;
 pub mod error;
 
 ///
