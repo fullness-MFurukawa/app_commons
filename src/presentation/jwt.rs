@@ -16,7 +16,7 @@ pub trait ClaimsGenerator<T>{
 ///
 pub trait JwtEncoder {
     // JWTトークン生成
-    fn encode<T:Serialize>(claims: &T) -> String{
+    fn encode<T:Serialize>(claims: &T) -> String {
         // Headerの生成
         let mut header = jsonwebtoken::Header::default();
         header.typ = Some(String::from("JWT")); // typeの設定
