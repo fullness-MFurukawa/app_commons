@@ -1,4 +1,4 @@
-use jsonwebtoken::{decode , DecodingKey, EncodingKey, TokenData, Validation};
+use jsonwebtoken::{DecodingKey, EncodingKey, TokenData, Validation};
 use serde::de::DeserializeOwned;
 use serde::Serialize;
 
@@ -32,14 +32,14 @@ pub trait JwtEncoder {
 /// JTWトークンデコード
 ///
 pub trait JwtDecoder<T:DeserializeOwned , E , R> {
-    // ヘッダーのデコード
-    fn decode_header(&self , request: &R) -> Result<String , E>;
-    // JWTトークンのデコードと検証
-    fn decode_jwt_token(&self , jwt: &str) -> Result<TokenData<T> , jsonwebtoken::errors::Error> {
-        match decode::<T>(
+    // ヘッダーの解析
+    fn parse_header(&self , request: &R) -> Result<String , E>;
+    // トークンの検証とデコード
+    fn decode(&self , token: &str) -> Result<TokenData<T> , jsonwebtoken::errors::Error> {
+        match jsonwebtoken::decode::<T>(
             //　シークレットキーでデコード
-            jwt, &DecodingKey::from_secret(JWT_SECRET_KEY.as_ref()),
-            // トークンの検証とデコード
+            token , &DecodingKey::from_secret(JWT_SECRET_KEY.as_ref()),
+            // トークンの検証
             &Validation::default()) {
             Ok(token) => Ok(token),
             Err(error) => Err(error)
