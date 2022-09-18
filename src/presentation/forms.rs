@@ -1,4 +1,5 @@
 use std::collections::HashMap;
+use anyhow::Result;
 use serde::{de, Deserialize, Serialize};
 use validator::{validate_length , validate_required , validate_range , Validate};
 use crate::domain::entities::{Category, Product, User};
@@ -13,7 +14,7 @@ use crate::presentation::validate::{AppValidator, ValidationError};
 /// FormをDomain,Valueオブジェクトに変換する
 ///
 pub trait FormToDomain<T>{
-    fn convert(&self) -> anyhow::Result<T , AppError>;
+    fn convert(&self) -> Result<T , AppError>;
 }
 
 ///
@@ -31,7 +32,7 @@ pub struct ProductSearchForm {
 }
 /// 入力値検証
 impl AppValidator for ProductSearchForm{
-    fn validate_value(&self) -> anyhow::Result<(), ValidationError> {
+    fn validate_value(&self) -> Result<(), ValidationError> {
         let mut errors:HashMap<String,String> = HashMap::new();
         // 未入力と範囲チェック
         if self.keyword.is_none() || self.keyword.as_ref().unwrap().is_empty() {
@@ -61,10 +62,12 @@ pub struct ProductRegisterForm {
 }
 /// FormをProductに変換する
 impl FormToDomain<Product> for ProductRegisterForm {
-    fn convert(&self) -> anyhow::Result<Product, AppError> {
+    fn convert(&self) -> Result<Product, AppError> {
+        //  Categoryを生成する
         let category = Category::new(
             CategoryId::try_from(self.category_id.unwrap().clone())?,
             CategoryName::try_from(String::from("dummy"))?);
+        //　Productを生成して返す
         Ok(Product::new(
             ProductId::try_from(0)?,
             ProductName::try_from(self.name.as_ref().unwrap().clone())?,
@@ -74,7 +77,7 @@ impl FormToDomain<Product> for ProductRegisterForm {
 }
 /// 入力値検証
 impl AppValidator for ProductRegisterForm{
-    fn validate_value(&self) -> anyhow::Result<(), ValidationError> {
+    fn validate_value(&self) -> Result<(), ValidationError> {
         let mut errors:HashMap<String,String> = HashMap::new();
         // nameフィールドの検証 未入力と文字数チェック
         if ! validate_length(self.name.as_ref().unwrap(), Some(4), Some(20), None) {
@@ -114,7 +117,7 @@ pub struct LoginForm {
 }
 /// FormをUserに変換する
 impl FormToDomain<User> for LoginForm{
-    fn convert(&self) -> anyhow::Result<User, AppError> {
+    fn convert(&self) -> Result<User, AppError> {
         User::new(UserName::try_from(self.name.as_ref().unwrap().clone())?,
                   Password::try_from(self.password.as_ref().unwrap().clone())?,
                   Mail::try_from(String::from("dummy"))?)
@@ -122,7 +125,7 @@ impl FormToDomain<User> for LoginForm{
 }
 /// 入力値検証
 impl AppValidator for LoginForm {
-    fn validate_value(&self) -> anyhow::Result<(), ValidationError> {
+    fn validate_value(&self) -> Result<(), ValidationError> {
         // エラーメッセージを格納するHashMap
         let mut errors:HashMap<String,String> = HashMap::new();
         match self.validate() { // 検証メソッドの実行
