@@ -2,8 +2,9 @@ use jsonwebtoken::{decode , DecodingKey, EncodingKey, TokenData, Validation};
 use serde::de::DeserializeOwned;
 use serde::Serialize;
 
-pub const JWT_SECRET_KEY:   &str = "app-secret";  // シークレットキー
-pub const JWT_COOKIE_KEY:   &str = "authorize";   // Cookieキー
+pub const JWT_SECRET_KEY:  &str = "app-secret";  // シークレットキー
+pub const JWT_HEADER_KEY:  &str = "Authorize";   // ヘッダーキー
+pub const JWT_COOKIE_KEY:  &str = "Authorize";   // Cookieキー
 
 ///
 /// Claimsの生成
