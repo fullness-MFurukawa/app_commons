@@ -3,8 +3,8 @@ use serde::de::DeserializeOwned;
 use serde::Serialize;
 
 pub const JWT_SECRET_KEY:  &str = "app-secret";  // シークレットキー
-pub const JWT_HEADER_KEY:  &str = "Authorize";   // ヘッダーキー
-pub const JWT_COOKIE_KEY:  &str = "Authorize";   // Cookieキー
+pub const JWT_HEADER_KEY:  &str = "Authorization";   // ヘッダーキー
+pub const JWT_COOKIE_KEY:  &str = "Authorization";   // Cookieキー
 
 ///
 /// Claimsの生成
@@ -46,20 +46,3 @@ pub trait JwtDecoder<T:DeserializeOwned , E , R> {
         }
     }
 }
-/*
-pub struct JwtEncoderImpl;
-impl JwtEncoder for JwtEncoderImpl{
-    // JWTトークン生成
-    fn encode<T:Serialize>(claims: &T) -> String {
-        // Headerの生成
-        let mut header = jsonwebtoken::Header::default();
-        header.typ = Some(String::from("JWT")); // typeの設定
-        header.alg = jsonwebtoken::Algorithm::HS256; // アルゴリズムの設定
-        // Headerとクレームでトークンを生成
-        jsonwebtoken::encode(&header , &claims ,
-                             // シークレットキーでエンコード
-                             &EncodingKey::from_secret(JWT_SECRET_KEY.as_ref())).unwrap()
-    }
-}
-
- */
