@@ -25,7 +25,7 @@ impl UserRepository for UserRepositoryImpl{
     type Transaction = sea_orm::DatabaseTransaction;
     /// 指定されたユーザー名で問合せする
     async fn select_by_name(&self, tran: &Self::Transaction, user_name: &UserName) -> Result<Option<User>> {
-        match SeaOrmUser::find().filter(user::Column::UserName.contains(user_name.value().as_str())).one(tran).await {
+        match SeaOrmUser::find().filter(user::Column::UserName.eq(user_name.value().as_str())).one(tran).await {
             Ok(option_model) => {
                 match option_model {
                     Some(model) => Ok(UserConverter::model_to_entity(&model).ok()),
