@@ -5,7 +5,7 @@ use crate::domain::values::products::ProductName;
 use crate::domain::values::users::UserName;
 use crate::Result;
 
-/// 商品を扱うリポジトリ
+/// 商品 Repository
 #[async_trait]
 pub trait ProductRepository: Send + Sync + 'static {
     type Transaction;
@@ -13,10 +13,10 @@ pub trait ProductRepository: Send + Sync + 'static {
     async fn select_by_name_like(&self , _: &Self::Transaction , keyword: &ProductName) -> Result<Vec<Product>>;
     /// 新しい商品を永続化する
     async fn insert(&self , _: &Self::Transaction , product: &Product) -> Result<Product>;
-    /// 商品の存在確認
+    /// 商品名で検索する
     async fn exists(&self , _:&Self::Transaction , name: &ProductName) -> Result<bool>;
 }
-/// カテゴリを扱うリポジトリ
+/// 商品カテゴリ Repository
 #[async_trait]
 pub trait CategoryRepository : Send + Sync + 'static {
     type Transaction;
@@ -25,7 +25,7 @@ pub trait CategoryRepository : Send + Sync + 'static {
     ///　指定された識別子でカテゴリを取得する
     async fn select_by_id(&self , _: &Self::Transaction , id: &CategoryId) -> Result<Option<Category>>;
 }
-/// ユーザーを扱うリポジトリ
+/// ユーザー　Repository
 #[async_trait]
 pub trait UserRepository : Send + Sync + 'static {
     type Transaction;
