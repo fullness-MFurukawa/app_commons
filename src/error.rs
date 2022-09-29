@@ -1,23 +1,18 @@
 use sea_orm::DbErr;
 use thiserror::Error;
-
 ///
-/// アプリケーション エラー
+/// アプリケーション全体で利用するエラー型
 ///
 #[derive(Debug , Error)]
 pub enum AppError{
-    // 検索処理エラー
     #[error("{0}")]
-    SearchError(String) ,
-    // 登録処理エラー
+    SearchError(String) ,  // 検索処理エラー
     #[error("{0}")]
-    RegisterError(String) ,
-    // 認証エラー
+    RegisterError(String) , // 登録処理エラー
     #[error("{0}")]
-    AuthenticateError(String) ,
-    // 永続化層のエラー , ドメインルールエラー
+    AuthenticateError(String) ,// 認証エラー
     #[error(transparent)]
-    InternalError(#[from] anyhow::Error)
+    InternalError(#[from] anyhow::Error) // 永続化層のエラー , ドメインルールエラー
 }
 // SeaOrmのエラーをラップした内部エラーを生成する
 impl From<DbErr> for AppError{
@@ -25,7 +20,7 @@ impl From<DbErr> for AppError{
         AppError::InternalError(anyhow::Error::new(err))
     }
 }
-// エラーメッセージをラップした内部エラーを生成する
+// メッセージをラップした内部エラーを生成する
 impl From<&str> for AppError{
     fn from(msg: &str) -> Self {
         AppError::InternalError(anyhow::Error::msg(msg.to_string()))

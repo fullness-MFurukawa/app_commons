@@ -6,6 +6,7 @@ use crate::{Result,AppError};
 ///
 #[derive(Clone , Debug , PartialEq , Eq)]
 pub struct CategoryId(i32);
+// 値を生成して返す、ルール違反の場合はAppErrorを返す
 impl TryFrom<i32> for CategoryId{
     type Error = AppError;
     fn try_from(value: i32) -> Result<Self> {
@@ -28,6 +29,7 @@ impl ValueInto<i32> for CategoryId{
 ///
 #[derive(Clone , Debug , PartialEq , Eq)]
 pub struct CategoryName(String);
+// 値を生成して返す、ルール違反の場合はAppErrorを返す
 impl TryFrom<String> for CategoryName{
     type Error = AppError;
     fn try_from(value: String) -> Result<Self> {

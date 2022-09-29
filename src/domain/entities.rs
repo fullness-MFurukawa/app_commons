@@ -8,7 +8,7 @@ use crate::Result;
 
 
 ///
-///  trait:識別子操の特性
+///  trait:識別子操作
 ///
 pub trait Characteristic {
     type Identifier;      // 識別子
@@ -21,7 +21,7 @@ pub trait Characteristic {
 }
 
 ///
-/// カテゴリを表すDomain Entity
+/// カテゴリを表すEntity
 ///
 #[derive(Clone , PartialEq , Eq , Debug)]
 pub struct Category{
@@ -33,22 +33,26 @@ impl Category {
         Self {id, name}
     }
 }
+//  識別子操作
 impl  Characteristic for Category{
     type Identifier = CategoryId;
+    // 識別子を変更する
     fn change(&mut self, value: &Self::Identifier) -> Result<()> {
         self.id = value.clone();
         Ok(())
     }
+    // 識別子を取得する
     fn get(&self) -> Self::Identifier {
         self.id.clone()
     }
+    // 識別子の同一性を検証する
     fn equals(&self, value: &Self::Identifier) -> bool {
         self.id.eq(value)
     }
 }
 
 ///
-/// 商品を表すDomain Entity
+/// 商品を表すEntity
 ///
 #[derive(Clone , PartialEq , Eq , Debug)]
 pub struct Product{
@@ -58,26 +62,31 @@ pub struct Product{
     pub category:       Option<Category>    // カテゴリ
 }
 impl Product {
+    // コンストラクタ
     pub fn new(id: ProductId, name: ProductName, price: ProductPrice , category: Option<Category>) -> Self {
         Self{ id , name , price , category }
     }
 }
+//  識別子操作
 impl Characteristic for Product {
     type Identifier = ProductId;
+    // 識別子を変更する
     fn change(&mut self, value: &Self::Identifier) -> Result<()> {
         self.id = value.clone();
         Ok(())
     }
+    // 識別子を取得する
     fn get(&self) -> Self::Identifier {
         self.id.clone()
     }
+    // 識別子の同一性を検証する
     fn equals(&self, value: &Self::Identifier) -> bool {
         self.id.eq(&value)
     }
 }
 
 ///
-/// ユーザーを表す Domain Entity
+/// ユーザーを表す Entity
 ///
 #[derive(Clone , PartialEq , Eq , Debug)]
 pub struct User {
@@ -103,15 +112,19 @@ impl User {
         Self{user_id,user_name,password,mail}
     }
 }
+//  識別子操作
 impl Characteristic for User {
     type Identifier = UserId;
+    // 識別子を変更する
     fn change(&mut self, value: &Self::Identifier) -> Result<()> {
         self.user_id = value.clone();
         Ok(())
     }
+    // 識別子を取得する
     fn get(&self) -> Self::Identifier {
         self.user_id.clone()
     }
+    // 識別子の同一性を検証する
     fn equals(&self, value: &Self::Identifier) -> bool {
         self.user_id.eq(value)
     }
