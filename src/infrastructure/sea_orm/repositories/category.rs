@@ -12,10 +12,11 @@ use crate::infrastructure::sea_orm::models::prelude::SeaOrmProductCategory;
 
 
 ///
-///  カテゴリリポジトリの実装
+///  商品カテゴリ Repository
 ///
 pub struct CategoryRepositoryImpl;
 impl CategoryRepositoryImpl {
+    //  Repositoryの生成
     pub fn new() -> Arc<dyn CategoryRepository<Transaction=DatabaseTransaction>> {
         Arc::new(Self{})
     }

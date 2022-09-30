@@ -11,18 +11,20 @@ use crate::infrastructure::sea_orm::models::product;
 use crate::infrastructure::sea_orm::models::user;
 use crate::infrastructure::converter::{ActiveModelGenerator, ModelAndEntity, VecModelToVecEntity};
 
+///
+/// 商品カテゴリの変換
+///
 pub struct CategoryConverter;
+// ORMモデルとEntityの相互変換
 impl ModelAndEntity for CategoryConverter{
     type Entity = Category;
-    type Model = product_category::Model;
-
+    type Model  = product_category::Model;
     fn model_to_entity(model: &Self::Model) -> Result<Self::Entity> {
         let m = model.clone();
         Ok(Category::new(
             CategoryId::try_from(m.id)? ,
             CategoryName::try_from(m.name.unwrap())?))
     }
-
     fn entity_to_model(entity: &Self::Entity) -> Self::Model {
         Self::Model{
             id: entity.get().value() ,
@@ -30,10 +32,12 @@ impl ModelAndEntity for CategoryConverter{
         }
     }
 }
+// Vec<ORMモデル>をVec<Entity>に変換
 impl VecModelToVecEntity for CategoryConverter {
     type Entity = Category;
     type Model = product_category::Model;
     type JoinModel = ();
+    // 1種類のVec<ORMモデル>をVe<Entity>に変換する
     fn entities(models: &Vec<Self::Model>) -> Result<Vec<Self::Entity>>{
         let mut categories:Vec<Self::Entity> = Vec::new();
         for model in models {
@@ -79,6 +83,7 @@ impl ModelAndEntity for ProductConverter{
         }
     }
 }
+// Vec<ORMモデル>をVec<Entity>に変換
 impl VecModelToVecEntity for ProductConverter {
     type Entity = Product;
     type Model = product::Model;

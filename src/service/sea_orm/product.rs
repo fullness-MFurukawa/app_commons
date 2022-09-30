@@ -44,6 +44,7 @@ impl ProductService for ProductServiceImpl{
     }
     // 商品を永続化する
     async fn register(&self, db: &Self::Database , product: &Product) -> Result<Product> {
+        // トランザクションを開始する
         let tran = match db.begin().await {
             Ok(tran) => tran ,
             Err(error) => return Err(AppError::from(error))
@@ -58,12 +59,13 @@ impl ProductService for ProductServiceImpl{
     }
     // 商品の存在確認する
     async fn exists(&self, db: &Self::Database , name: &ProductName) -> Result<()> {
+        // トランザクションを開始する
         let tran = match db.begin().await {
             Ok(tran) => tran ,
             Err(error) => return Err(AppError::from(error))
         };
-        let exists = self.repository.exists(&tran , name).await?;
-        if exists {
+        // 同一名称の商品が存在するか確認する
+        if self.repository.exists(&tran , name).await? {
             Err(AppError::RegisterError(format!("{}は登録済です。",name.value())))
         }else{
             Ok(())
