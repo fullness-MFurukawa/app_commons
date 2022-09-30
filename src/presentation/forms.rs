@@ -1,7 +1,8 @@
 use std::collections::HashMap;
+use std::ops::Deref;
 use anyhow::Result;
 use serde::{de, Deserialize, Serialize};
-use validator::{validate_length , validate_required , validate_range , Validate};
+use validator::{validate_length, validate_required, validate_range, Validate, ValidationErrors};
 use crate::domain::entities::{Category, Product, User};
 use crate::domain::values::categories::{CategoryId, CategoryName};
 use crate::domain::values::products::{ProductId, ProductName, ProductPrice};
@@ -47,7 +48,7 @@ impl AppValidator for ProductSearchForm{
 }
 // FormをProductNameに変換する
 impl FormToDomain<ProductName> for ProductSearchForm{
-    fn convert(&self) -> anyhow::Result<ProductName, AppError> {
+    fn convert(&self) -> Result<ProductName, AppError> {
         Ok(ProductName::try_from(self.keyword.as_ref().unwrap().clone())?)
     }
 }
@@ -127,31 +128,55 @@ impl FormToDomain<User> for LoginForm{
 impl AppValidator for LoginForm {
     fn validate_value(&self) -> Result<(), ValidationError> {
         // エラーメッセージを格納するHashMap
-        let mut errors:HashMap<String,String> = HashMap::new();
+        let mut error_messages:HashMap<String,String> = HashMap::new();
+        // フィールド毎のエラーを取得するクロージャ
+        let mut get_errors = |validation_errors: ValidationErrors, field: &str| {
+            match validation_errors.field_errors().get(field){
+                Some(errors) =>{
+                    // &&Vec<ValidationErrors>からエラーメッセージを取得する
+                    for error in errors.deref() {
+                        error_messages.insert(String::from(field),
+                                              error.message.as_ref().unwrap().to_string());
+                    }
+                }, None => ()
+            };
+        };
         match self.validate() { // 検証メソッドの実行
             Ok(_) => Ok(()) ,
-            Err(validate_errors) => {
-                // フィールド毎のエラーを取得する
-                let field_errors = validate_errors.field_errors();
-                // nameフィールドのエラーを取得してHashMapに格納する
-                match field_errors.get("name"){
-                    Some(name_errors) =>{
-                        for name_error in *name_errors {
-                            errors.insert(String::from("name"), name_error.message.as_ref().unwrap().to_string());
-                        }
-                    }, None => ()
-                };
-                // passwordフィールドのエラーを取得してHashMapに格納する
-                match field_errors.get("password"){
-                    Some(password_errors)=>{
-                        for password_error in *password_errors {
-                            errors.insert("password".to_string(), password_error.message.as_ref().unwrap().to_string());
-                        }
-                    },None => ()
-                };
-                Err(ValidationError::from(errors)) // 検証エラーを返す
+            Err(validation_errors) => {
+                // nameフィールドのエラーを取得する
+                get_errors(validation_errors.clone(), "name");
+                // passwordフィールドのエラーを取得する
+                get_errors(validation_errors.clone() , "password");
+                Err(ValidationError::from(error_messages)) // 検証エラーを返す
             }
         }
+           /*
+                match self.validate() { // 検証メソッドの実行
+                    Ok(_) => Ok(()) ,
+                    Err(validate_errors) => {
+                        // フィールド毎のエラーを取得する
+                        let field_errors = validate_errors.field_errors();
+                        // nameフィールドのエラーを取得してHashMapに格納する
+                        match field_errors.get("name"){
+                            Some(name_errors) =>{
+                                for name_error in *name_errors {
+                                    errors.insert(String::from("name"), name_error.message.as_ref().unwrap().to_string());
+                                }
+                            }, None => ()
+                        };
+                        // passwordフィールドのエラーを取得してHashMapに格納する
+                        match field_errors.get("password"){
+                            Some(password_errors)=>{
+                                for password_error in *password_errors {
+                                    errors.insert("password".to_string(), password_error.message.as_ref().unwrap().to_string());
+                                }
+                            },None => ()
+                        };
+                        Err(ValidationError::from(validate_errors)) // 検証エラーを返す
+                    }
+                }
+                 */
     }
 }
 

@@ -3,7 +3,6 @@ use rusty_money::{iso, Money};
 use crate::domain::entities::{Category, Characteristic, Product, User};
 use crate::domain::values::ValueInto;
 
-
 // EntityからDTOへの変換トレイト
 pub trait EntityToDto<T>{
     // 1つのEntityからDTOに変換する
@@ -11,7 +10,6 @@ pub trait EntityToDto<T>{
     // 複数のEntityから複数のDTOに変換する
     fn converts(values: &Vec<T>) -> Vec<Self> where Self:Sized;
 }
-
 
 ///
 ///　商品カテゴリDTO
